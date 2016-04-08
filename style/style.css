@@ -1,0 +1,17 @@
+#container {
+    width: 120px;
+    height: 60px;
+}
+
+#container div {
+		width: 120px;
+}
+
+#container div div {
+    width: 12px;
+    height: 12px;
+    border-style: solid;
+    text-align: center;
+    border: 1px solid #eee;
+}
+
