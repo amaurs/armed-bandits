@@ -6,6 +6,8 @@ function drawBoard()
 {
 	console.log("Hello World!");
 	board = createCleanBoard();
+
+    board[4][0] = 1;
 	printBoardToElement(board, "container");
 
 }
@@ -27,12 +29,23 @@ function printBoardToElement(board, element)
         for(var j = 0; j < board[0].length; j++)
         {
         	var column = document.createElement('div');
+            column.innerHTML = getIcon(board[i][j]);
+            console.log(board[i][j]); 
         	row.appendChild(column);
         }
         gridBackground.appendChild(row);
     }
 
     container.appendChild(gridBackground);
+}
+
+function getIcon(key)
+{
+    var emojis = 
+        { 0: "" , 1: "🤖" }
+
+    return emojis[key];
+
 }
 
 /**

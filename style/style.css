@@ -1,6 +1,10 @@
+#container{
+}
+
 #grid_bg {
     width: 288px;
     height: 60px;
+    
 }
 
 #grid_bg>div {
@@ -15,5 +19,6 @@
     text-align: center;
     border: 1px solid #eee;
     float: left;
+    font-size: 22px;
 }
 
