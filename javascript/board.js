@@ -18,6 +18,9 @@ function printBoardToElement(board, element)
     console.log(board);
     var row = "";
     var container = document.getElementById("container");
+    
+    var gridBackground = document.createElement('div');
+    gridBackground.setAttribute("id","grid_bg");
     for(var i = 0; i < board.length; i++)
     {
         var row = document.createElement('div');
@@ -26,8 +29,10 @@ function printBoardToElement(board, element)
         	var column = document.createElement('div');
         	row.appendChild(column);
         }
-        container.appendChild(row);
+        gridBackground.appendChild(row);
     }
+
+    container.appendChild(gridBackground);
 }
 
 /**

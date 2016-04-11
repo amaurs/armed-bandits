@@ -1,17 +1,19 @@
-#container {
-    width: 120px;
+#grid_bg {
+    width: 288px;
     height: 60px;
 }
 
-#container div {
-		width: 120px;
+#grid_bg>div {
+	width: 288px;
+    height: 26px;
 }
 
-#container div div {
-    width: 12px;
-    height: 12px;
+#grid_bg>div>div {
+    width: 24px;
+    height: 24px;
     border-style: solid;
     text-align: center;
     border: 1px solid #eee;
+    float: left;
 }
 
