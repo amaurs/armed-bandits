@@ -57,10 +57,32 @@ World.prototype.letAct = function(critter , vector)
     if (action && action.type == "move") 
     {
         var dest = this.checkDestination(action , vector);
-        if(dest && this.grid.get(dest) == null) 
+        if(dest) 
         {
-            this.grid.set(vector , null);
-            this.grid.set(dest, critter); 
+            critterInDest = this.grid.get(dest);
+            if(critterInDest == null)
+            {
+                this.grid.set(vector , null);
+                this.grid.set(dest, critter);
+            }
+            else
+            {
+                this.grid.set(vector , null);
+                this.grid.set(dest, critter);
+                console.log("reward" + charFromElement(critterInDest));
+                reward = charFromElement(critterInDest);
+                if(reward == "%")
+                {
+                    this.grid.set(vector , null);
+                    this.grid.set(dest, null);
+                    this.grid.set(INITIAL, critter);
+                }
+                if(reward == "/") 
+                {
+
+                }
+            }
+ 
         }
     } 
 };

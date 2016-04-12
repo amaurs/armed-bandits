@@ -44,3 +44,21 @@ View.prototype.find = function(ch) {
     console.log(found);
     return randomElement(found);
 }
+
+/**
+Returns a random direction in which the given char is found. It returns null if no directions contains the given char.
+**/
+View.prototype.findSeveral = function(list) {
+    var all = [];
+    console.log("incoming ");
+    console.log(list);
+    for(var i = 0; i < list.length; i++)
+    {
+        all = all.concat(this.findAll(list[i]));
+    }
+    if(all.length == 0) 
+    {
+        return null;
+    }
+    return randomElement(all);
+}

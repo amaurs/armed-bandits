@@ -11,7 +11,9 @@ When this agent acts a random direction is selected.
 **/
 RandomAgent.prototype.act = function(view) 
 {
-    this.direction = view.find(" ") || "s";
+	var thing =  " ,%,/".split(",");
+	console.log(thing);
+    this.direction = view.findSeveral(thing) || "s";
     return {type: "move", direction: this.direction};
 }
 
@@ -24,3 +26,8 @@ function Wall() {}
 Goal.
 **/
 function Price() {}
+
+/**
+Goal.
+**/
+function Punishment() {}
