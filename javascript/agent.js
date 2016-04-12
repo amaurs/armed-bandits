@@ -17,3 +17,8 @@ RandomAgent.prototype.act = function(view)
     }
     return {type: "move", direction: this.direction};
 }
+
+/**
+Simplest agent of all, a wall object does nothing, just acts as an obstacle.
+**/
+function Wall() {}
