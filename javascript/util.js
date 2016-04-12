@@ -9,6 +9,11 @@ var fourPointDirections = {
  };
 
 /**
+Helper array to select from the pool of moves.
+**/
+var fourPointDirectionNames = "n e s w".split(" ");
+
+/**
 Agents will be able to move in the usual cardinal directions plus the ordinal or intercadinal directions.
 **/
 var eightPointDirections = 
@@ -22,6 +27,22 @@ var eightPointDirections =
     "w"  : new Vector(-1,  0),
     "nw" : new Vector(-1, -1),
 };
+
+/**
+Helper array to select from the pool of moves.
+**/
+var eightPointDirectionNames = "n ne e se s sw w nw".split(" ");
+
+
+/**
+This function returns a random element from the given array.
+**/
+function randomElement(array) 
+{
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+
 
 /**
 Helper method that retuns the element represented by a char.
