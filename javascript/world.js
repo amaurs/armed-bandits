@@ -81,10 +81,46 @@ World.prototype.checkDestination = function(action, vector)
 };
 
 
+/**
+This function renders the given in a html tbody element.
+**/
+World.prototype.toHTML2 = function()
+{
+    var row = "";
+    var container = document.getElementById("world");
+
+    while(container.firstChild){
+        container.removeChild(container.firstChild);
+    }
+
+    //console.log(container);
+
+    console.log("Everything is ok!");
+    
+    var gridBackground = document.createElement('div');
+    gridBackground.setAttribute("id","grid_bg");
+    for(var i = 0; i < this.grid.height; i++)
+    {
+        var row = document.createElement('div');
+        for(var j = 0; j < this.grid.width; j++)
+        {
+            var element = this.grid.get(new Vector(j,i));
+            var column = document.createElement('div');
+            var icon = getIcon(charFromElement(element));
+            if(icon)
+            {
+                column.innerHTML = icon;
+            }
+            row.appendChild(column);
+        }
+        gridBackground.appendChild(row);
+    }
+
+    container.appendChild(gridBackground);
+}
 
 
-
-World.prototype.toHTML =  function(user) {
+World.prototype.toHTML =  function() {
     var output = "";
     //console.log(this.grid);
     for(var y = 0; y < this.grid.height; y++){

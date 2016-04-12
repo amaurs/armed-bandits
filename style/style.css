@@ -7,13 +7,13 @@
 }
 
 #grid_bg {
-    width: 288px;
+    width: 336px;
     height: 60px;
     
 }
 
 #grid_bg>div {
-	width: 288px;
+	width: 336px;
     height: 26px;
 }
 

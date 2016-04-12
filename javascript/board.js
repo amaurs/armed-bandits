@@ -63,7 +63,12 @@ function getIcon(key)
           "o": "🐑", 
           "%": "🌹"  }
 
-    return emojis[key];
+    var emojis2 = 
+        { "#": "⚫️" , 
+          "o": "🤖", 
+          "%": "🍺"  }
+
+    return emojis2[key];
 
 }
 

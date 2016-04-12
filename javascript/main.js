@@ -6,12 +6,11 @@ var display;
 
 function paint(){
     world.turn();
-    console.log(display)
-    display.innerHTML = world.toHTML();
+    world.toHTML2();
 }
 
 window.onload = function(){
-	drawBoard();
+	//drawBoard();
 
 	display = document.querySelector('#world');
 
