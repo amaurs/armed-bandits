@@ -11,10 +11,7 @@ When this agent acts a random direction is selected.
 **/
 RandomAgent.prototype.act = function(view) 
 {
-    if (view.look(this.direction) != " ")
-    {
-        this.direction = view.find(" ") || "s";
-    }
+    this.direction = view.find(" ") || "s";
     return {type: "move", direction: this.direction};
 }
 
@@ -22,3 +19,8 @@ RandomAgent.prototype.act = function(view)
 Simplest agent of all, a wall object does nothing, just acts as an obstacle.
 **/
 function Wall() {}
+
+/**
+Goal.
+**/
+function Price() {}

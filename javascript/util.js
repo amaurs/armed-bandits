@@ -28,6 +28,13 @@ var eightPointDirections =
     "nw" : new Vector(-1, -1),
 };
 
+
+
+var directionNames = fourPointDirectionNames;
+
+var directions = fourPointDirections;
+
+
 /**
 Helper array to select from the pool of moves.
 **/

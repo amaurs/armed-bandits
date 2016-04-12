@@ -2,12 +2,29 @@ var board;
 var COLUMNS = 10;
 var ROWS = 5;
 
+
+
+var plan = ["############",
+            "#         %#",
+            "#          #",
+            "#          #",
+            "#          #",
+            "#####      #",
+            "#          #",
+            "#          #",
+            "#      #####",
+            "#          #",
+            "#o         #",
+            "############"];
+
+
+
 function drawBoard()
 {
 	console.log("Hello World!");
 	board = createCleanBoard();
 
-    board[4][0] = 1;
+    board[4][0] = "o";
 	printBoardToElement(board, "container");
 
 }
@@ -42,7 +59,9 @@ function printBoardToElement(board, element)
 function getIcon(key)
 {
     var emojis = 
-        { 0: "" , 1: "🤖" }
+        { "#": "🌵" , 
+          "o": "🐑", 
+          "%": "🌹"  }
 
     return emojis[key];
 
@@ -67,7 +86,7 @@ function createZerosGrid(width, height)
         var row = [];
         for(var j = 0; j < width; j++)
         {
-            row.push(0);
+            row.push("%"    );
         }
 
         arr.push(row);

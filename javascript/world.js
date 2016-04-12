@@ -79,3 +79,44 @@ World.prototype.checkDestination = function(action, vector)
         }
     }
 };
+
+
+
+
+
+World.prototype.toHTML =  function(user) {
+    var output = "";
+    //console.log(this.grid);
+    for(var y = 0; y < this.grid.height; y++){
+        output += "";
+        for(var x = 0; x < this.grid.width; x++){
+            var element = this.grid.get(new Vector(x,y));
+            
+            if(charFromElement(element)=="*") 
+            {
+output += "<span class='grass'>"+charFromElement(element)+"</span>";
+            }else
+            if(charFromElement(element)=="o") 
+            { 
+output += "<span class='predator'>"+charFromElement(element)+"</span>";
+            }else
+            if(charFromElement(element)=="%") 
+            { 
+output += "<span class='bouncer'>"+charFromElement(element)+"</span>";
+            }else
+            if(charFromElement(element)=="@") 
+            { 
+output += "<span class='follower'>"+charFromElement(element)+"</span>";
+            }else 
+            { 
+                output += charFromElement(element);
+            }
+        }
+        output += "<br>";
+    }
+
+    return output;
+};
+
+
+
