@@ -63,27 +63,23 @@ World.prototype.letAct = function(critter , vector)
             critterInDest = this.grid.get(dest);
             if(critterInDest == null)
             {
-		console.log("about to move");
-                //this.grid.set(vector , null);
-                //this.grid.set(dest, critter);
-		this.grid.setAgent(dest, critter);
+		        this.grid.setAgent(dest, critter);
             }
             else
             {
-                //this.grid.set(vector , null);
-                //this.grid.set(dest, critter);
                 this.grid.setAgent(dest, critter);
                 console.log("reward" + charFromElement(critterInDest));
                 reward = charFromElement(critterInDest);
                 if(reward == "%")
                 {
-                    this.grid.set(vector , null);
-                    this.grid.set(dest, null);
-                    this.grid.set(INITIAL, critter);
+                    this.grid.setAgent(INITIAL, critter);
+                    var price = document.getElementById("price");
+                    price.innerHTML = price.innerHTML + getIcon("%");
                 }
                 if(reward == "/") 
                 {
-
+                    var punishment = document.getElementById("punishment");
+                    punishment.innerHTML = punishment.innerHTML + getIcon("/");
                 }
             }
  
@@ -119,10 +115,6 @@ World.prototype.toHTML2 = function()
         container.removeChild(container.firstChild);
     }
 
-    //console.log(container);
-
-    console.log("Everything is ok!");
-    
     var gridBackground = document.createElement('div');
     gridBackground.setAttribute("id","grid_bg");
     for(var i = 0; i < this.grid.height; i++)
