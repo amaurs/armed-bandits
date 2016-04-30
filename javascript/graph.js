@@ -47,7 +47,30 @@ Node.prototype.log = function()
 
 Node.prototype.toString = function()
 {
-	return "(" + this.tag + ")";
+	return this.tag;
+}
+
+function State(tag)
+{
+	Node.call(this, tag);
+}
+State.prototype = Object.create(Node.prototype);
+
+State.prototype.toString = function()
+{
+	return this.tag;
+}
+
+function Action(tag)
+{
+	Node.call(this, tag);
+}
+Action.prototype = Object.create(Node.prototype);
+
+
+Action.prototype.toString = function()
+{
+	return this.tag;
 }
 
 function Edge(toNode, weight)
@@ -64,10 +87,20 @@ Edge.prototype.toString = function()
 
 function Graph(initial)
 {
-	this.initial = initial;
+	this.initial = null;
 	this.nodes = [];
 	this.addNode(initial);
+	this.current = null;
+}
+
+Graph.prototype.setInitial = function(initial)
+{
+	this.initial = initial;
 	this.current = initial;
+}
+Graph.prototype.getCurrent = function(initial)
+{
+	return this.current;
 }
 
 Graph.prototype.addNode = function(node)
@@ -94,63 +127,7 @@ Graph.prototype.log = function()
 	console.log(this.current.toString());
 }
 
-
-
-FB = new Node('FB');
-C1 = new Node('C1');
-C2 = new Node('C2');
-C3 = new Node('C3');
-Pass = new Node('Pass');
-Pub = new Node('Pub');
-Sleep = new Node('Sleep');
-
-
-FB.addEdge(new Edge(C1, 0.1));
-FB.addEdge(new Edge(FB, 0.9));
-C1.addEdge(new Edge(FB, 0.5));
-C1.addEdge(new Edge(C2, 0.5));
-C2.addEdge(new Edge(Sleep, 0.2));
-C2.addEdge(new Edge(C3, 0.8));
-C3.addEdge(new Edge(Pass, 0.6));
-C3.addEdge(new Edge(Pub, 0.4));
-Pub.addEdge(new Edge(C1, 0.2));
-Pub.addEdge(new Edge(C2, 0.4));
-Pub.addEdge(new Edge(C3, 0.4));
-Pass.addEdge(new Edge(Sleep, 1.0));
-Sleep.addEdge(new Edge(Sleep, 1.0));
-
-/**
-arr = [];
-arr[0] = 0;
-arr[1] = 0;
-arr[2] = 0;
-
-for(var i = 0; i < 100; i++)
-{
-	index = Pub.getRandomNeighbor();
-	arr[index] = arr[index] + 1;
-}
-	
-console.log("*******");
-console.log(arr[0]);
-console.log(arr[1]);
-console.log(arr[2]);
-**/
-
-var graph = new Graph(C1);
-
-
-graph.addNode(FB);
-graph.addNode(C1);
-graph.addNode(C2);
-graph.addNode(C3);
-graph.addNode(Pass);
-graph.addNode(Pub);
-graph.addNode(Sleep);
-
-console.log("Run.");
-graph.run(10);
-
-console.log("Run correclty.")
-
-
+module.exports.Edge = Edge;
+module.exports.State = State;
+module.exports.Action = Action;
+module.exports.Graph = Graph;

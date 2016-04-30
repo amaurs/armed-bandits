@@ -1,5 +1,6 @@
+
 var world = new World(plan, {"#": Wall,
-                             "o": RandomAgent,
+                             "o": TemporalDifferenceAgent,
                              "%": Price,
                              "/": Punishment})
 

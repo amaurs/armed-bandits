@@ -21,7 +21,7 @@ var plan = ["############",
 
 function drawBoard()
 {
-	console.log("Hello World!");
+	
 	board = createCleanBoard();
 
     board[4][0] = "o";
@@ -34,7 +34,7 @@ This function renders the given in a html tbody element.
 **/
 function printBoardToElement(board, element)
 {
-    console.log(board);
+    
     var row = "";
     var container = document.getElementById("container");
     

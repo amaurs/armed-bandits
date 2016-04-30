@@ -65,6 +65,26 @@ function elementFromChar(legend, ch)
       return element;
 } 
 
+function vectorFromString(vectorString)
+{
+  vectorArray = vectorString.split(",");
+  return new Vector(parseInt(vectorArray[0]),parseInt(vectorArray[1]));
+}
+
+/**
+Helper method that retuns the element represented by a char.
+**/
+function stateFromChar(x, y, ch) 
+{ 
+    if(ch != "#")
+    {
+      var state = new State(x + "," + y + "," + ch);
+      return state;
+    }
+    return null;
+      
+} 
+
 /**
 Helper method that retuns the char that represents an element.
 **/

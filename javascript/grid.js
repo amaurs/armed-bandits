@@ -22,6 +22,17 @@ Grid.prototype.isInside = function(vector)
 };
 
 /**
+Checks if the given vector object is inside this grid.
+**/
+Grid.prototype.isCorner = function(vector) 
+{
+  return (vector.x == 0 && vector.y == 0) ||
+         (vector.x == this.width - 1 && vector.y == this.height - 1) ||
+         (vector.x == 0 && vector.y == this.height - 1) ||
+         (vector.x == this.width - 1  && vector.y == 0);
+};
+
+/**
 Returns the value found in the position represented by the given vector.
 **/
 Grid.prototype.getAgent = function() 
@@ -36,7 +47,6 @@ Grid.prototype.setAgent = function(vector, value)
 { 
   this.agent = value;
   this.agentPosition = vector;
-  console.log("Setting the agent(" + this.agentPosition.x + "," + this.agentPosition.y + ")");
 };
 
 /**
@@ -44,15 +54,24 @@ Returns the value found in the position represented by the given vector.
 **/
 Grid.prototype.get = function(vector) 
 {
-  console.log("(" + this.agentPosition.x + "," + this.agentPosition.y + ")");
   if(vector.x == this.agentPosition.x && vector.y == this.agentPosition.y)
   {	
-     console.log("The agent was returned in position (" + this.agentPosition.x + "," + this.agentPosition.y + ")");
-     console.log("The agent: " + charFromElement(this.agent));
+     //console.log("The agent was returned in position (" + this.agentPosition.x + "," + this.agentPosition.y + ")");
+     //console.log("The agent: " + charFromElement(this.agent));
      return this.agent;
   }
   return this.space[vector.x + this.width * vector.y];
 };
+
+
+/**
+Returns the value found in the position represented by the given vector.
+**/
+Grid.prototype.getSimple = function(vector) 
+{
+  return this.space[vector.x + this.width * vector.y];
+};
+
 
 /**
 Sets the value of the position represented by the given vector to the incoming value.
