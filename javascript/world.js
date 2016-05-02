@@ -32,62 +32,70 @@ function World(map, legend)
         var key = keys[index];
         var state = states[key];
         var oldPosition = vectorFromString(key);
-        for(var direction in directions)
+        var oldChar = charFromElement(grid.getSimple(oldPosition));
+
+        if(oldChar == "%")
         {
-
-
-            var directionVector = fourPointDirections[direction];
-            var position = oldPosition.plus(directionVector);
-
-            console.log(position.toString());
-            if(grid.isInside(position))
+            var init = new Action("init");
+            edgeToInit = new Edge(init, 1);
+            
+            state.addEdge(edgeToInit)
+            transitions["goal -> init"] = edgeToInit;
+            actions["goal -> init"] = init;
+            edgeFromInit = new Edge(states["1,1"], 1);
+            transitions["init -> initial"] = edgeFromInit;
+            init.addEdge(edgeFromInit);                
+        }
+        else
+        {
+            for(var direction in directions)
             {
-               var action = new Action(direction);
-               actions[key + "->" + direction] = action;
-               
-               var edge = new Edge(action, 0.25);
-
-               transitions[state.toString()+ "->" + action.toString()] = edge;
-
-               state.addEdge(edge);
-
-
-
-               var chr = charFromElement(grid.getSimple(position));
-
-               // if the target state is a non valid state then we return
-               // to the current state with probability 1
-               var edgeFromAction;
-               if(chr == "#")
-               {
-                    edgeFromAction = new Edge(state, 1);
-                    transitions[action.toString()+ "->" + state.toString()] = edgeFromAction;                  
-               }
-               else
-               {
-                    if(chr == "%")
-                    {
-                        edgeFromAction = new Edge(states["1,1"], 1);
+    
+    
+                var directionVector = fourPointDirections[direction];
+                var position = oldPosition.plus(directionVector);
+    
+                console.log(position.toString());
+                if(grid.isInside(position))
+                {
+                   var action = new Action(direction);
+                   actions[key + "->" + direction] = action;
+                   
+                   var edge = new Edge(action, 0.25);
+    
+                   transitions[state.toString()+ "->" + action.toString()] = edge;
+    
+                   state.addEdge(edge);
+    
+    
+    
+                   var chr = charFromElement(grid.getSimple(position));
+    
+                   // if the target state is a non valid state then we return
+                   // to the current state with probability 1
+                   var edgeFromAction;
+                   if(chr == "#")
+                   {
+                        edgeFromAction = new Edge(state, 1);
                         transitions[action.toString()+ "->" + state.toString()] = edgeFromAction;                  
-                    }
-                    else
-                    {
+                   }
+                   else
+                   {
                         var newState = states[position.toString()];
                         edgeFromAction = new Edge(newState, 1);
                         transitions[action.toString()+ "->" + newState.toString()] = edgeFromAction;
-                    }
-                    
-               }
+                   }
+    
+    
+                   action.addEdge(edgeFromAction);
+    
+                }
+                var newKey = position.toString();
 
-
-               action.addEdge(edgeFromAction);
-
-            }
-            var newKey = position.toString();
-
-
-
+    
+            }   
         }
+
     }
     console.log("States : " + Object.keys(states).length);
     console.log("Actions : " + Object.keys(actions).length);
