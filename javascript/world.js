@@ -129,7 +129,7 @@ function World(map, legend)
     graph.setInitial(states["1,1"]);
 
 
-    this.grid.setAgent(new Vector(1,1), new TemporalDifferenceAgent(graph, .9, .7, Object.keys(states), directions));
+    this.grid.setAgent(new Vector(1,1), new TemporalDifferenceAgent(graph, .9, .7, .25, Object.keys(states), directions));
 }
 
 /**
@@ -170,7 +170,7 @@ This methos does the actual action for each agent.
 **/
 World.prototype.letAct = function(critter , vector) 
 {
-    var action = critter.act(new View(this, vector)); 
+    var action = critter.actSarsa(new View(this, vector)); 
      console.log(action);
     if (action && action.type == "move") 
     {

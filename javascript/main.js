@@ -16,5 +16,5 @@ window.onload = function(){
 
 	display = document.querySelector('#world');
 
-	setInterval(function (){ paint(); }, 100);
+	setInterval(function (){ paint(); }, 50);
 }

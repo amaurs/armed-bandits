@@ -36,6 +36,18 @@ Node.prototype.getRandomNeighbor = function()
 	return this.edges[i].toNode;
 }
 
+Node.prototype.moveTo = function(direction)
+{
+	for(var i = 0 ;  i < this.edges.length; i++)
+	{
+		if(this.edges[i].toNode.toString() == direction)
+		{
+			return this.edges[i].toNode;
+		}
+	}
+	return null;
+}
+
 Node.prototype.log = function()
 {
 	for(var i = 0 ;  i < this.edges.length; i++)
@@ -50,9 +62,20 @@ Node.prototype.toString = function()
 	return this.tag;
 }
 
-function State(tag, reward)
+Node.prototype.isTerminal = function()
+{
+	return false;
+}
+
+Node.prototype.hello = function()
+{
+	console.log("This is stupid!!!!!!!")
+}
+
+function State(tag, reward, isTerm)
 {
 	this.reward = reward;
+	this.isTerm = isTerm;
 	Node.call(this, tag);
 }
 State.prototype = Object.create(Node.prototype);
@@ -65,6 +88,11 @@ State.prototype.toString = function()
 State.prototype.getReward = function()
 {
 	return this.reward;
+}
+
+State.prototype.isTerminal = function()
+{
+	return this.isTerm;
 }
 
 function Action(tag)
@@ -109,6 +137,11 @@ Graph.prototype.getCurrent = function(initial)
 	return this.current;
 }
 
+Graph.prototype.isTerminal = function()
+{
+	return this.current.isTerminal();
+}
+
 Graph.prototype.addNode = function(node)
 {
 	this.nodes.push(node);
@@ -117,6 +150,11 @@ Graph.prototype.addNode = function(node)
 Graph.prototype.step = function()
 {
 	this.current = this.current.getRandomNeighbor();
+}
+
+Graph.prototype.moveTo = function(direction)
+{
+	this.current = this.current.moveTo(direction);
 }
 
 Graph.prototype.run = function(n)

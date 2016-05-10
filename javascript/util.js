@@ -79,6 +79,7 @@ function stateFromChar(x, y, ch)
     if(ch != "#")
     {
       var reward = 0;
+      var isTerminal = false;
       if(ch == "/")
       {
         reward = -0.2;
@@ -86,9 +87,10 @@ function stateFromChar(x, y, ch)
       if(ch == "%")
       {
         reward = 1;
+        isTerminal = true;
       }
 
-      var state = new State(x + "," + y + "," + ch, reward);
+      var state = new State(x + "," + y + "," + ch, reward, isTerminal);
       console.log(ch + " = " + reward);
       return state;
     }
@@ -109,4 +111,24 @@ function charFromElement(element)
     {
         return element.originChar;
     }
+}
+
+function shuffle(array) {
+    let counter = array.length;
+
+    // While there are elements in the array
+    while (counter > 0) {
+        // Pick a random index
+        let index = Math.floor(Math.random() * counter);
+
+        // Decrease counter by 1
+        counter--;
+
+        // And swap the last element with it
+        let temp = array[counter];
+        array[counter] = array[index];
+        array[index] = temp;
+    }
+
+    return array;
 }
