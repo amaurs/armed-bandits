@@ -78,7 +78,18 @@ function stateFromChar(x, y, ch)
 { 
     if(ch != "#")
     {
-      var state = new State(x + "," + y + "," + ch);
+      var reward = 0;
+      if(ch == "/")
+      {
+        reward = -0.2;
+      }
+      if(ch == "%")
+      {
+        reward = 1;
+      }
+
+      var state = new State(x + "," + y + "," + ch, reward);
+      console.log(ch + " = " + reward);
       return state;
     }
     return null;

@@ -50,8 +50,9 @@ Node.prototype.toString = function()
 	return this.tag;
 }
 
-function State(tag)
+function State(tag, reward)
 {
+	this.reward = reward;
 	Node.call(this, tag);
 }
 State.prototype = Object.create(Node.prototype);
@@ -59,6 +60,11 @@ State.prototype = Object.create(Node.prototype);
 State.prototype.toString = function()
 {
 	return this.tag;
+}
+
+State.prototype.getReward = function()
+{
+	return this.reward;
 }
 
 function Action(tag)

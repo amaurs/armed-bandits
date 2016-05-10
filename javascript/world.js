@@ -14,6 +14,7 @@ function World(map, legend)
     {
         for (var x = 0; x < line.length; x++)
         {
+            console.log(line[x]);
             grid.set(new Vector(x, y), elementFromChar(legend, line[x]));
             
             var res = stateFromChar(x, y, line[x]);
@@ -84,6 +85,7 @@ function World(map, legend)
                         var newState = states[position.toString()];
                         edgeFromAction = new Edge(newState, 1);
                         transitions[action.toString()+ "->" + newState.toString()] = edgeFromAction;
+
                    }
     
     
@@ -127,7 +129,7 @@ function World(map, legend)
     graph.setInitial(states["1,1"]);
 
 
-    this.grid.setAgent(new Vector(1,1), new TemporalDifferenceAgent(graph));
+    this.grid.setAgent(new Vector(1,1), new TemporalDifferenceAgent(graph, .9, .7, Object.keys(states), directions));
 }
 
 /**
