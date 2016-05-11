@@ -91,7 +91,7 @@ TemporalDifferenceAgent.prototype.actSarsa = function(view)
 
 	
 	this.sarsa(this.state1, this.action1, reward, state2, action2);
-	//console.log("Q Value of state " + this.state1.toString() + ": " + this.getValue(this.state2, this.action2));
+	console.log("Q Value of state " + this.state1.toString() + " and action " + this.action1 + " : " + this.getValue(this.state1, this.action1));
 	isTerminal = this.graph.isTerminal();
 	if(isTerminal)
 	{
