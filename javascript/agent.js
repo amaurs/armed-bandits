@@ -91,7 +91,7 @@ TemporalDifferenceAgent.prototype.actSarsa = function(view)
 
 	
 	this.sarsa(this.state1, this.action1, reward, state2, action2);
-	console.log("Q Value of state " + this.state1.toString() + ": " + this.getValue(this.state2, this.action2));
+	//console.log("Q Value of state " + this.state1.toString() + ": " + this.getValue(this.state2, this.action2));
 	isTerminal = this.graph.isTerminal();
 	if(isTerminal)
 	{
@@ -120,6 +120,7 @@ TemporalDifferenceAgent.prototype.selectNextAction = function(s)
 	var max = -10000;
 	var res = null;
 	
+	var newArray = [];
 
 	shuffle(this.actions);
 
@@ -129,14 +130,15 @@ TemporalDifferenceAgent.prototype.selectNextAction = function(s)
     {
     	var key = vectorFromString(s.toString()) + direction;
     	console.log("key: " + key);	
-    	if(max < this.Q[key])
+    	if(max <= this.Q[key])
     	{
     		max = this.Q[key];
+    		newArray.push(direction);
     		res = direction;
     	}
 	}
 	console.log("next move: " + res);
-	return res;
+	return randomElement(newArray);
 }
 
 TemporalDifferenceAgent.prototype.sarsa = function(s,a,reward,s2,a2)

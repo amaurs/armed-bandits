@@ -129,7 +129,7 @@ function World(map, legend)
     graph.setInitial(states["1,1"]);
 
 
-    this.grid.setAgent(new Vector(1,1), new TemporalDifferenceAgent(graph, .9, .7, .25, Object.keys(states), directions));
+    this.grid.setAgent(new Vector(1,1), new TemporalDifferenceAgent(graph, .9, .7, .1, Object.keys(states), directions));
 }
 
 /**
