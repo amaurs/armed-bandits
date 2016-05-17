@@ -21,6 +21,7 @@ window.onload = function(){
 	document.getElementById('alpha').value = alpha * 100;
 	document.getElementById('gamma').value = gamma * 100;
 	document.getElementById('epsilon').value = epsilon * 100;
+	//document.getElementById('speed').value = speed / 10;
 
 	display = document.querySelector('#world');
 
@@ -36,6 +37,12 @@ window.onload = function(){
 		{ 
 			epsilon = document.getElementById('epsilon').value / 100;
 		});
-
-	setInterval(function (){ paint(); }, 100);
+	/**
+	document.getElementById('speed').addEventListener("change",function ()
+		{ 
+			speed = document.getElementById('speed').value * 10;
+			setInterval(function (){ paint(); }, speed);
+		});
+	**/
+	setInterval(function (){ paint(); }, speed);
 }

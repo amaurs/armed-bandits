@@ -3,11 +3,11 @@ var plan = ["############",
             "#          #",
             "#          #",
             "#          #",
-            "#####  /   #",
+            "#####      #",
             "#          #",
-            "#   /     %#",
+            "#         %#",
             "#      #####",
-            "#  /       #",
+            "#          #",
             "#%         #",
             "############"];
 
@@ -19,6 +19,7 @@ var height = plan[0].length;
 var alpha = .4;
 var gamma = .5;
 var epsilon = .2;
+var speed = 10;
 
 /**
 Agents will be able to move using only the four cardinal points.
@@ -110,7 +111,7 @@ function stateFromChar(x, y, ch, index)
       }
       if(ch == "%")
       {
-        reward = 10;
+        reward = 100;
         isTerminal = true;
       }
 

@@ -136,6 +136,12 @@ Graph.prototype.setInitial = function(initial)
 	this.initial = initial;
 	this.current = initial;
 }
+
+Graph.prototype.reset = function()
+{
+	this.current = this.initial;
+}
+
 Graph.prototype.getCurrent = function(initial)
 {
 	return this.current;
