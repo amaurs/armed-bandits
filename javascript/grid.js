@@ -63,6 +63,17 @@ Grid.prototype.get = function(vector)
   return this.space[vector.x + this.width * vector.y];
 };
 
+/**
+Returns the index inside the array that represents this position.
+**/
+Grid.prototype.getPositionIndex = function(vector) 
+{
+  var res = vector.x + this.width * vector.y;
+  console.log(res);
+  
+  return res;
+};
+
 
 /**
 Returns the value found in the position represented by the given vector.

@@ -1,3 +1,25 @@
+var plan = ["############",
+            "#          #",
+            "#          #",
+            "#          #",
+            "#          #",
+            "#####  /   #",
+            "#          #",
+            "#   /     %#",
+            "#      #####",
+            "#  /       #",
+            "#%         #",
+            "############"];
+
+
+var width = plan.length;
+
+var height = plan[0].length;
+
+var alpha = .4;
+var gamma = .5;
+var epsilon = .2;
+
 /**
 Agents will be able to move using only the four cardinal points.
 **/
@@ -29,7 +51,6 @@ var eightPointDirections =
 };
 
 
-
 var directionNames = fourPointDirectionNames;
 
 var directions = fourPointDirections;
@@ -40,6 +61,10 @@ Helper array to select from the pool of moves.
 **/
 var eightPointDirectionNames = "n ne e se s sw w nw".split(" ");
 
+function getDirectionIndex(direction)
+{
+  return directionNames.indexOf(direction);
+}
 
 /**
 This function returns a random element from the given array.
@@ -48,7 +73,6 @@ function randomElement(array)
 {
   return array[Math.floor(Math.random() * array.length)];
 }
-
 
 
 /**
@@ -74,24 +98,24 @@ function vectorFromString(vectorString)
 /**
 Helper method that retuns the element represented by a char.
 **/
-function stateFromChar(x, y, ch) 
+function stateFromChar(x, y, ch, index) 
 { 
     if(ch != "#")
     {
-      var reward = 0;
+      var reward = -0.1;
       var isTerminal = false;
       if(ch == "/")
       {
-        reward = -0.2;
+        reward = -0.8;
       }
       if(ch == "%")
       {
-        reward = 1;
+        reward = 10;
         isTerminal = true;
       }
 
-      var state = new State(x + "," + y + "," + ch, reward, isTerminal);
-      console.log(ch + " = " + reward);
+      var state = new State(x + "," + y + "," + ch, index, reward, isTerminal);
+      //console.log(ch + " = " + reward);
       return state;
     }
     return null;

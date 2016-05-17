@@ -14,13 +14,17 @@ function World(map, legend)
     {
         for (var x = 0; x < line.length; x++)
         {
-            console.log(line[x]);
+            //console.log(line[x]);
             grid.set(new Vector(x, y), elementFromChar(legend, line[x]));
+
+            var index = grid.getPositionIndex(new Vector(x, y));
             
-            var res = stateFromChar(x, y, line[x]);
+            var res = stateFromChar(x, y, line[x], index);
             if(res)
             {
+                // TODO: change the index into the numeric one.
                 states[x + "," + y] = res;
+                //console.log("Index for " + x + "," + y + " : " +index);
             }
             
         }
@@ -37,15 +41,43 @@ function World(map, legend)
 
         if(oldChar == "%")
         {
-            var init = new Action("init");
-            edgeToInit = new Edge(init, 1);
+            var initN = new Action("n", getDirectionIndex("n"));
+            var initE = new Action("e", getDirectionIndex("e"));
+            var initS = new Action("s", getDirectionIndex("s"));
+            var initW = new Action("w", getDirectionIndex("w"));
             
-            state.addEdge(edgeToInit)
-            transitions["goal -> init"] = edgeToInit;
-            actions["goal -> init"] = init;
-            edgeFromInit = new Edge(states["1,1"], 1);
-            transitions["init -> initial"] = edgeFromInit;
-            init.addEdge(edgeFromInit);                
+            var edgeToInitN = new Edge(initN, .25);
+            var edgeToInitE = new Edge(initE, .25);
+            var edgeToInitS = new Edge(initS, .25);
+            var edgeToInitW = new Edge(initW, .25);
+            
+            state.addEdge(edgeToInitN);
+            state.addEdge(edgeToInitE);
+            state.addEdge(edgeToInitS);
+            state.addEdge(edgeToInitW);
+
+            transitions["goal -> initN"] = edgeToInitN;
+            transitions["goal -> initE"] = edgeToInitE;
+            transitions["goal -> initS"] = edgeToInitS;
+            transitions["goal -> initW"] = edgeToInitW;
+
+            actions["goal -> initN"] = initN;
+            actions["goal -> initE"] = initE;
+            actions["goal -> initS"] = initS;
+            actions["goal -> initW"] = initW;
+            edgeFromInitN = new Edge(states["1,1"], 1);
+            edgeFromInitE = new Edge(states["1,1"], 1);
+            edgeFromInitS = new Edge(states["1,1"], 1);
+            edgeFromInitW = new Edge(states["1,1"], 1);
+            transitions["initN -> initial"] = edgeFromInitN;
+            transitions["initE -> initial"] = edgeFromInitE;
+            transitions["initS -> initial"] = edgeFromInitS;
+            transitions["initW -> initial"] = edgeFromInitW;
+            
+            initN.addEdge(edgeFromInitN);  
+            initE.addEdge(edgeFromInitE);  
+            initS.addEdge(edgeFromInitS);  
+            initW.addEdge(edgeFromInitW);                
         }
         else
         {
@@ -56,10 +88,10 @@ function World(map, legend)
                 var directionVector = fourPointDirections[direction];
                 var position = oldPosition.plus(directionVector);
     
-                console.log(position.toString());
+                //console.log(position.toString());
                 if(grid.isInside(position))
                 {
-                   var action = new Action(direction);
+                   var action = new Action(direction, getDirectionIndex(direction));
                    actions[key + "->" + direction] = action;
                    
                    var edge = new Edge(action, 0.25);
@@ -99,10 +131,10 @@ function World(map, legend)
         }
 
     }
-    console.log("States : " + Object.keys(states).length);
-    console.log("Actions : " + Object.keys(actions).length);
-    console.log("Transitions : " + Object.keys(transitions).length);
-    console.log(transitions);
+    //console.log("States : " + Object.keys(states).length);
+    //console.log("Actions : " + Object.keys(actions).length);
+    //console.log("Transitions : " + Object.keys(transitions).length);
+    //console.log(transitions);
 
 
     var graph = new Graph();
@@ -129,7 +161,8 @@ function World(map, legend)
     graph.setInitial(states["1,1"]);
 
 
-    this.grid.setAgent(new Vector(1,1), new TemporalDifferenceAgent(graph, .9, .7, .1, Object.keys(states), directions));
+    var allStates = Object.keys(states).map(function(key){return states[key];});
+    this.grid.setAgent(new Vector(1,1), new TemporalDifferenceAgent(graph, allStates, directions));
 }
 
 /**
@@ -171,7 +204,7 @@ This methos does the actual action for each agent.
 World.prototype.letAct = function(critter , vector) 
 {
     var action = critter.actSarsa(new View(this, vector)); 
-     console.log(action);
+     //console.log(action);
     if (action && action.type == "move") 
     {
         var dest = this.checkDestination(action , vector);
@@ -204,7 +237,7 @@ World.prototype.letAct = function(critter , vector)
 
     if (action && action.type == "put") 
     {
-        console.log("put atction");
+        //console.log("put atction");
         var dest = action.position;
         if(dest) 
         {
@@ -284,39 +317,6 @@ World.prototype.toHTML2 = function()
     container.appendChild(gridBackground);
 }
 
-
-World.prototype.toHTML =  function() {
-    var output = "";
-    for(var y = 0; y < this.grid.height; y++){
-        output += "";
-        for(var x = 0; x < this.grid.width; x++){
-            var element = this.grid.get(new Vector(x,y));
-            
-            if(charFromElement(element)=="*") 
-            {
-output += "<span class='grass'>"+charFromElement(element)+"</span>";
-            }else
-            if(charFromElement(element)=="o") 
-            { 
-output += "<span class='predator'>"+charFromElement(element)+"</span>";
-            }else
-            if(charFromElement(element)=="%") 
-            { 
-output += "<span class='bouncer'>"+charFromElement(element)+"</span>";
-            }else
-            if(charFromElement(element)=="@") 
-            { 
-output += "<span class='follower'>"+charFromElement(element)+"</span>";
-            }else 
-            { 
-                output += charFromElement(element);
-            }
-        }
-        output += "<br>";
-    }
-
-    return output;
-};
 
 
 

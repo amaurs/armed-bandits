@@ -1,6 +1,7 @@
-function Node(tag)
+function Node(tag, index)
 {
 	this.tag = tag;
+	this.index = index;
 	this.edges = [];
 	this.cumulative = [];
 }
@@ -18,6 +19,11 @@ Node.prototype.addEdge = function(edge)
 		sum = sum + this.edges[i].weight;
 		this.cumulative[i] = sum;
 	}
+}
+
+Node.prototype.getIndex = function()
+{
+	return this.index;
 }
 
 Node.prototype.getNumberOfAdjacent = function()
@@ -38,8 +44,11 @@ Node.prototype.getRandomNeighbor = function()
 
 Node.prototype.moveTo = function(direction)
 {
+	//console.log(this.edges.length);
 	for(var i = 0 ;  i < this.edges.length; i++)
 	{
+		//console.log(this.edges[i].toNode.toString());
+		//console.log(direction);
 		if(this.edges[i].toNode.toString() == direction)
 		{
 			return this.edges[i].toNode;
@@ -67,16 +76,11 @@ Node.prototype.isTerminal = function()
 	return false;
 }
 
-Node.prototype.hello = function()
-{
-	console.log("This is stupid!!!!!!!")
-}
-
-function State(tag, reward, isTerm)
+function State(tag, index, reward, isTerm)
 {
 	this.reward = reward;
 	this.isTerm = isTerm;
-	Node.call(this, tag);
+	Node.call(this, tag, index);
 }
 State.prototype = Object.create(Node.prototype);
 
@@ -95,9 +99,9 @@ State.prototype.isTerminal = function()
 	return this.isTerm;
 }
 
-function Action(tag)
+function Action(tag, index)
 {
-	Node.call(this, tag);
+	Node.call(this, tag, index);
 }
 Action.prototype = Object.create(Node.prototype);
 
@@ -149,12 +153,17 @@ Graph.prototype.addNode = function(node)
 
 Graph.prototype.step = function()
 {
+	//console.log(this.current.toString());
+	//console.log(this.current);
 	this.current = this.current.getRandomNeighbor();
 }
 
 Graph.prototype.moveTo = function(direction)
 {
+	//console.log(this.current.toString())
+	//console.log(direction);
 	this.current = this.current.moveTo(direction);
+	//console.log(this.current.toString())
 }
 
 Graph.prototype.run = function(n)
@@ -171,7 +180,3 @@ Graph.prototype.log = function()
 	console.log(this.current.toString());
 }
 
-module.exports.Edge = Edge;
-module.exports.State = State;
-module.exports.Action = Action;
-module.exports.Graph = Graph;
