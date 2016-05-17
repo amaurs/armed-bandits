@@ -45,4 +45,8 @@ window.onload = function(){
 		});
 	**/
 	setInterval(function (){ paint(); }, speed);
+
+	google.charts.load('current', {packages: ['corechart', 'line']});
+  	google.charts.setOnLoadCallback(drawBasic);
+
 }
