@@ -55,9 +55,7 @@ Returns the value found in the position represented by the given vector.
 Grid.prototype.get = function(vector) 
 {
   if(vector.x == this.agentPosition.x && vector.y == this.agentPosition.y)
-  {	
-     //console.log("The agent was returned in position (" + this.agentPosition.x + "," + this.agentPosition.y + ")");
-     //console.log("The agent: " + charFromElement(this.agent));
+  {
      return this.agent;
   }
   return this.space[vector.x + this.width * vector.y];
@@ -69,8 +67,6 @@ Returns the index inside the array that represents this position.
 Grid.prototype.getPositionIndex = function(vector) 
 {
   var res = vector.x + this.width * vector.y;
-  console.log(res);
-  
   return res;
 };
 

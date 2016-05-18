@@ -14,7 +14,6 @@ function World(map, legend)
     {
         for (var x = 0; x < line.length; x++)
         {
-            //console.log(line[x]);
             grid.set(new Vector(x, y), elementFromChar(legend, line[x]));
 
             var index = grid.getPositionIndex(new Vector(x, y));
@@ -24,7 +23,6 @@ function World(map, legend)
             {
                 // TODO: change the index into the numeric one.
                 states[x + "," + y] = res;
-                //console.log("Index for " + x + "," + y + " : " +index);
             }
             
         }
@@ -65,10 +63,12 @@ function World(map, legend)
             actions["goal -> initE"] = initE;
             actions["goal -> initS"] = initS;
             actions["goal -> initW"] = initW;
+            
             edgeFromInitN = new Edge(states["1,1"], 1);
             edgeFromInitE = new Edge(states["1,1"], 1);
             edgeFromInitS = new Edge(states["1,1"], 1);
             edgeFromInitW = new Edge(states["1,1"], 1);
+
             transitions["initN -> initial"] = edgeFromInitN;
             transitions["initE -> initial"] = edgeFromInitE;
             transitions["initS -> initial"] = edgeFromInitS;
@@ -87,8 +87,6 @@ function World(map, legend)
     
                 var directionVector = fourPointDirections[direction];
                 var position = oldPosition.plus(directionVector);
-    
-                //console.log(position.toString());
                 if(grid.isInside(position))
                 {
                    var action = new Action(direction, getDirectionIndex(direction));
@@ -131,11 +129,6 @@ function World(map, legend)
         }
 
     }
-    //console.log("States : " + Object.keys(states).length);
-    //console.log("Actions : " + Object.keys(actions).length);
-    //console.log("Transitions : " + Object.keys(transitions).length);
-    //console.log(transitions);
-
 
     var graph = new Graph();
 
@@ -203,8 +196,7 @@ This methos does the actual action for each agent.
 **/
 World.prototype.letAct = function(critter , vector) 
 {
-    var action = critter.actSarsa(new View(this, vector)); 
-     //console.log(action);
+    var action = critter.actSarsa(new View(this, vector));
     if (action && action.type == "move") 
     {
         var dest = this.checkDestination(action , vector);
@@ -213,7 +205,7 @@ World.prototype.letAct = function(critter , vector)
             critterInDest = this.grid.get(dest);
             if(critterInDest == null)
             {
-		        this.grid.setAgent(dest, critter);
+                this.grid.setAgent(dest, critter);
             }
             else
             {
@@ -222,8 +214,6 @@ World.prototype.letAct = function(critter , vector)
                 if(reward == "%")
                 {
                     this.grid.setAgent(INITIAL, critter);
-                    var price = document.getElementById("price");
-                    price.innerHTML = price.innerHTML + getIcon("%");
                 }
                 if(reward == "/") 
                 {
@@ -237,7 +227,6 @@ World.prototype.letAct = function(critter , vector)
 
     if (action && action.type == "put") 
     {
-        //console.log("put atction");
         var dest = action.position;
         if(dest) 
         {
@@ -256,13 +245,7 @@ World.prototype.letAct = function(critter , vector)
                     var price = document.getElementById("price");
                     price.innerHTML = price.innerHTML + getIcon("%");
                 }
-                if(reward == "/") 
-                {
-                    var punishment = document.getElementById("punishment");
-                    punishment.innerHTML = punishment.innerHTML + getIcon("/");
-                }
             }
- 
         }
     } 
 };
@@ -294,6 +277,8 @@ World.prototype.toHTML2 = function()
     while(container.firstChild){
         container.removeChild(container.firstChild);
     }
+    var price = document.getElementById("price");
+    price.innerHTML = getIcon("%") + ": " + episode;
 
     var gridBackground = document.createElement('div');
     gridBackground.setAttribute("id","grid_bg");
@@ -316,7 +301,3 @@ World.prototype.toHTML2 = function()
 
     container.appendChild(gridBackground);
 }
-
-
-
-

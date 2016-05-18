@@ -1,21 +1,13 @@
 var board;
 var COLUMNS = 10;
 var ROWS = 5;
-
 var INITIAL = new Vector(1,1);
-
-
-
-
 
 function drawBoard()
 {
-	
-	board = createCleanBoard();
-
+    board = createCleanBoard();
     board[4][0] = "o";
-	printBoardToElement(board, "container");
-
+    printBoardToElement(board, "container");
 }
 
 /**
@@ -23,10 +15,8 @@ This function renders the given in a html tbody element.
 **/
 function printBoardToElement(board, element)
 {
-    
     var row = "";
     var container = document.getElementById("container");
-    
     var gridBackground = document.createElement('div');
     gridBackground.setAttribute("id","grid_bg");
     for(var i = 0; i < board.length; i++)
@@ -34,14 +24,13 @@ function printBoardToElement(board, element)
         var row = document.createElement('div');
         for(var j = 0; j < board[0].length; j++)
         {
-        	var column = document.createElement('div');
+            var column = document.createElement('div');
             column.innerHTML = getIcon(board[i][j]);
             console.log(board[i][j]); 
-        	row.appendChild(column);
+            row.appendChild(column);
         }
         gridBackground.appendChild(row);
     }
-
     container.appendChild(gridBackground);
 }
 
@@ -51,15 +40,12 @@ function getIcon(key)
         { "#": "🌵" , 
           "o": "🐑", 
           "%": "🌹"  }
-
     var emojis2 = 
         { "#": "⚫️" , 
           "o": "🐒", 
           "%": "🍺",
           "/": "⚡️" }
-
     return emojis2[key];
-
 }
 
 /**
@@ -83,7 +69,6 @@ function createZerosGrid(width, height)
         {
             row.push("%"    );
         }
-
         arr.push(row);
     }
     return arr;

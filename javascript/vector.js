@@ -5,7 +5,6 @@ function Vector(x, y) {
   this.x = x;
   this.y = y;
 }
-
 /**
 Performs a simple arithmetic operation over the vector. It adds two vectors pointwise.
 **/

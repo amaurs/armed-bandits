@@ -11,7 +11,7 @@ When this agent acts a random direction is selected.
 **/
 RandomAgent.prototype.act = function(view) 
 {
-	var thing =  " ,%,/".split(",");
+    var thing =  " ,%,/".split(",");
     this.direction = view.findSeveral(thing) || "s";
     return {type: "move", direction: this.direction};
 }
@@ -21,23 +21,19 @@ This agent will only move randomly through the world.
 **/
 function TemporalDifferenceAgent(graph, states, actions) 
 {
-	this.graph = graph;
-	this.Q = {};
-	this.acum = 0;
-	this.actions = actions;
-	//console.log(states);
-
-	this.numStates = states.length;
-	this.numActions = actions.length;
-	for(var state in states)
+    this.graph = graph;
+    this.Q = {};
+    this.acum = 0;
+    this.actions = actions;
+    this.numStates = states.length;
+    this.numActions = actions.length;
+    for(var state in states)
     {
-    	for(var action in actions)
-   		{
-    		
-    		var index = this.getQIndex(states[state].getIndex(), getDirectionIndex(action));
-    		this.Q[index] = 0;
-    		//console.log("key: " + index + " = 0");
-    	}
+        for(var action in actions)
+           {
+            var index = this.getQIndex(states[state].getIndex(), getDirectionIndex(action));
+            this.Q[index] = 0;
+        }
     }
 };
 
@@ -46,14 +42,13 @@ When this agent acts a random direction is selected.
 **/
 TemporalDifferenceAgent.prototype.act = function(view) 
 {
-	this.graph.step();
-	this.direction = this.graph.getCurrent();
-	this.graph.step();
-	this.state1 = null;
-	this.action1 = null;
-	//console.log("The agent is now in " + this.graph.getCurrent());
-	myVector = vectorFromString(this.graph.getCurrent().toString());
-	return {type: "put", position: myVector};
+    this.graph.step();
+    this.direction = this.graph.getCurrent();
+    this.graph.step();
+    this.state1 = null;
+    this.action1 = null;
+    myVector = vectorFromString(this.graph.getCurrent().toString());
+    return {type: "put", position: myVector};
 }
 
 /**
@@ -61,131 +56,95 @@ When this agent acts a random direction is selected.
 **/
 TemporalDifferenceAgent.prototype.actSarsa = function(view) 
 {
-	//console.log("The agent is now in " + this.graph.getCurrent());
-	/*
-	var isTerminal = false;
-	*/
+    if(this.state1 == null || this.action1 == null)
+    {
+        //Initialize s
+        this.state1 = this.graph.getCurrent();
+        //Choose action1 from state1 using policy derived from Q (e-greedy) 
+        var nextMove = this.selectNextAction(this.state1.getIndex());
+        this.graph.moveTo(nextMove);
+        this.action1 = this.graph.getCurrent();
+        
+    }
 
-	
+    document.getElementById("n").innerHTML = "n" + this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("n"))];
+    document.getElementById("e").innerHTML = "e" + this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("e"))];
+    document.getElementById("s").innerHTML = "s" + this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("s"))];
+    document.getElementById("w").innerHTML = "w" + this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("w"))];
 
-	//console.log(this.Q);
-	if(this.state1 == null || this.action1 == null)
-	{
-		//Initialize s
-		this.state1 = this.graph.getCurrent();
-		//Choose action1 from state1 using policy derived from Q (e-greedy) 
-		var nextMove = this.selectNextAction(this.state1.getIndex());
-		this.graph.moveTo(nextMove);
-		this.action1 = this.graph.getCurrent();
-		
-	}
+    //Take action1, observe reward and state2
+    this.graph.step();
+    step = step + 1;
+    var reward = this.graph.getCurrent().getReward();
+    var state2 = this.graph.getCurrent();
+    
+    myVector = vectorFromString(this.graph.getCurrent().toString());
+    
+    //Choose action2 from state2 usign policy derived from Q (e-greedy) 
+    if(Math.random() < epsilon)
+    {
+        this.graph.step();
+    }
+    else
+    {
+        var nextMove = this.selectNextAction(state2.getIndex());
+        this.graph.moveTo(nextMove);
+    }
+    var action2 = this.graph.getCurrent();
+    this.sarsaLearn(this.state1.getIndex(), this.action1.getIndex(), reward, state2.getIndex(), action2.getIndex());
+    if(state2.isTerminal())
+    {
+        this.state1 = null;
+        this.action1 = null;
+        this.graph.reset();
+        episode = episode + 1;
+        var data = [];
+        data.push(episode);
+        data.push(step);
+        historicalData.push(data);
+        step = 0;
+        google.charts.setOnLoadCallback(drawBasic);
 
-	document.getElementById("n").innerHTML = "n" + this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("n"))];
-	document.getElementById("e").innerHTML = "e" + this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("e"))];
-	document.getElementById("s").innerHTML = "s" + this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("s"))];
-	document.getElementById("w").innerHTML = "w" + this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("w"))];
-
-	//Take action1, observe reward and state2
-	this.graph.step();
-	var reward = this.graph.getCurrent().getReward();
-	var state2 = this.graph.getCurrent();
-
-	
-	myVector = vectorFromString(this.graph.getCurrent().toString());
-	
-	//Choose action2 from state2 usign policy derived from Q (e-greedy) 
-	if(Math.random() < epsilon)
-	{
-		//console.log("epsilon");
-		this.graph.step();
-	}
-	else
-	{
-		//console.log("greedy");
-		var nextMove = this.selectNextAction(state2.getIndex());
-		this.graph.moveTo(nextMove);
-	}
-	var action2 = this.graph.getCurrent();
-
-
-
-	// Q(state1,action1) <- Q(state1,action1) + alpha [ reward + gammaQ(state2,action2) - Q(state1,action1)]
-
-	//console.log(action2.toString());
-	//this.graph.step();
-	//console.log("state 1:" + this.state1.toString());
-	//console.log("action 1:" + this.action1.toString());
-	//console.log("reward:" + reward);
-	//console.log("state 2:" + state2.toString());
-	//console.log("action 2:" + action2.toString());
-
-	this.sarsa(this.state1.getIndex(), this.action1.getIndex(), reward, state2.getIndex(), action2.getIndex());
-
-
-	//state1 <- state2
-	//action1 <- action2 
-	if(state2.isTerminal())
-	{
-		this.state1 = null;
-		this.action1 = null;
-		this.graph.reset();
-	}
-	else
-	{
-		this.state1 = state2;
-		this.action1 = action2;
-	}
-
-	
-
-	
-	return {type: "put", position: myVector};
+    }
+    else
+    {
+        this.state1 = state2;
+        this.action1 = action2;
+    }
+    return {type: "put", position: myVector};
 }
 
 TemporalDifferenceAgent.prototype.getValue = function(s, a)
 {
-	return this.Q[this.getQIndex(sIndex, aIndex)];
+    return this.Q[this.getQIndex(sIndex, aIndex)];
 }
 
 TemporalDifferenceAgent.prototype.selectNextAction = function(stateIndex)
-{	
-	var max = -10000;
-	var newArray = [];
+{    
+    var max = -10000;
+    var newArray = [];
 
-
-
-	for(var direction in this.actions)
+    for(var direction in this.actions)
     {
-    	//console.log(direction);
-    	var index = this.getQIndex(stateIndex, getDirectionIndex(direction));
-    	//console.log(index);
-    	//console.log(this.Q[index]);
-    	if(max <= this.Q[index])
-    	{
-    		//console.log("********************************");
-    		//console.log(max);
-    		//console.log("********************************");
-    		max = this.Q[index];
-    		newArray.push(direction);
-    	}
-	}
-	//console.log("The new array: 	" + newArray)
-	var res = randomElement(newArray);
-	//console.log("Greedy move:" + newArray);
-	//console.log("Greedy move:" + res);
-	return res;
+        var index = this.getQIndex(stateIndex, getDirectionIndex(direction));
+        if(max <= this.Q[index])
+        {
+            max = this.Q[index];
+            newArray.push(direction);
+        }
+    }
+    var res = randomElement(newArray);
+    return res;
 }
 
-TemporalDifferenceAgent.prototype.sarsa = function(sIndex1,aIndex1,reward,sIndex2,aIndex2)
-{	
-	//console.log("the reward " + reward);
-	this.Q[this.getQIndex(sIndex1,aIndex1)] = this.Q[this.getQIndex(sIndex1,aIndex1)] + alpha * (reward + gamma * this.Q[this.getQIndex(sIndex2,aIndex2)] - this.Q[this.getQIndex(sIndex1,aIndex1)]);
+TemporalDifferenceAgent.prototype.sarsaLearn = function(sIndex1,aIndex1,reward,sIndex2,aIndex2)
+{
+    this.Q[this.getQIndex(sIndex1,aIndex1)] = this.Q[this.getQIndex(sIndex1,aIndex1)] + alpha * (reward + gamma * this.Q[this.getQIndex(sIndex2,aIndex2)] - this.Q[this.getQIndex(sIndex1,aIndex1)]);
 }
 
 TemporalDifferenceAgent.prototype.getQIndex = function(s,a)
 {
-	//console.log("s:"+s+",a:"+a)
-	return this.numStates * a + s;
+    return this.numStates * a + s;
 }
 
 
