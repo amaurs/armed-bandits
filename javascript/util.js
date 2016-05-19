@@ -155,9 +155,9 @@ function shuffle(array) {
 function drawBasic() 
 {
     var chartDiv = document.getElementById('chart_div');
-    while(container.firstChild)
+    while(chartDiv.firstChild)
     {
-        container.removeChild(container.firstChild);
+        chartDiv.removeChild(chartDiv.firstChild);
     }
     var data = new google.visualization.DataTable();
     data.addColumn('number', 'Episode');

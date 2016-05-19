@@ -67,10 +67,10 @@ TemporalDifferenceAgent.prototype.actSarsa = function(view)
         
     }
 
-    document.getElementById("n").innerHTML = "n" + this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("n"))];
-    document.getElementById("e").innerHTML = "e" + this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("e"))];
-    document.getElementById("s").innerHTML = "s" + this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("s"))];
-    document.getElementById("w").innerHTML = "w" + this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("w"))];
+    document.getElementById("n").innerHTML = this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("n"))].toFixed(3);
+    document.getElementById("e").innerHTML = this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("e"))].toFixed(3);
+    document.getElementById("s").innerHTML = this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("s"))].toFixed(3);
+    document.getElementById("w").innerHTML = this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("w"))].toFixed(3);
 
     //Take action1, observe reward and state2
     this.graph.step();

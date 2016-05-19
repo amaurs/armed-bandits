@@ -6,7 +6,6 @@
         <title>Reinforcement Learning</title>
         <link rel="stylesheet" type="text/css" href="style/style.css">
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        
         <script src="javascript/graph.js"></script>
         <script src="javascript/vector.js"></script>
         <script src="javascript/util.js"></script>
@@ -18,26 +17,30 @@
         <script src="javascript/main.js"></script>
     </head>
     <body>
-        <h1>Reinforcement Learning</h1>
-        <div id="container"></div>
-        <div id="world"></div>
-        <div id="position"></div>
-        <div id="stats">
+<h1>Reinforcement Learning</h1>
+<div role="container">
+  
+  <div role="canvas">
+
+    <div id="world"></div>
+  </div>
+  <div role="tools">
+    <div role="controls">
             <div id="price"></div>
-            <div id="punishment"></div>
-            <div>
             <p>alpha</p><input id="alpha" type="range"></input>
             <p>gamma</p><input id="gamma" type="range"></input>
             <p>epsilon</p><input id="epsilon" type="range"></input>
-            <!--p>speed</p><input id="speed" type="range"></input-->
-            </div>
-            <div id="n"></div>
-            <div id="e"></div>
-            <div id="s"></div>
-            <div id="w"></div>
-
-
-        </div>
-        <div id="chart_div"></div>
+    </div>
+    <div role="state">
+      <table>
+        <tr><td></td><td><span id="n"></span></td><td></td></tr>
+        <tr><td><span id="e"></span></td><td></td><td><span id="w"></span></td></tr>
+        <tr><td></td><td><span id="s"></span></td><td></td></tr>
+      </table>
+    </div>
+    
+  </div>
+</div>
+<div id="chart_div"></div>
     </body>
 </html>

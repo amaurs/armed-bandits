@@ -1,3 +1,9 @@
+[role=container]{display:flex}
+[role=canvas]{outline:1px dashed red;padding:1em}
+[role=tools]{outline:1px dashed red;padding:1em}
+[role=controls]{outline:1px dashed red;padding:1em}
+[role=state]{outline:1px dashed red;padding:1em}
+
 #world{
    font-family: Courier;
    white-space: pre-wrap;
