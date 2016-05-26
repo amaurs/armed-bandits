@@ -1,14 +1,11 @@
 var plan = ["############",
             "#          #",
-            "#          #",
-            "#          #",
-            "#          #",
-            "#####      #",
-            "#          #",
-            "#     %    #",
-            "#      #####",
-            "#          #",
-            "#          #",
+            "#   ...... #",
+            "#   ...**. #",
+            "#   ...*%. #",
+            "#   ...**. #",
+            "#   ...**. #",
+            "#   ...**. #",
             "############"]; 
 
 /**
@@ -51,6 +48,7 @@ var epsilon = .2;
 var speed = 10;
 var episode = 0;
 var step = 0;
+var showWind = false;
 var historicalData = [];
 
 /**
@@ -101,14 +99,15 @@ function stateFromChar(x, y, ch, index)
     {
       var reward = -0.5;
       var isTerminal = false;
-      if(ch == "/")
-      {
-        reward = -3;
-      }
+      
       if(ch == "%")
       {
         reward = 100;
         isTerminal = true;
+      }
+      else
+      {
+        reward = -1;
       }
       var state = new State(x + "," + y + "," + ch, index, reward, isTerminal);
       return state;

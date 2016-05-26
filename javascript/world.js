@@ -10,6 +10,8 @@ function World(map, legend)
     var states = {};
     var actions = {}; 
     var transitions = {};
+
+
     map.forEach(function (line, y) 
     {
         for (var x = 0; x < line.length; x++)
@@ -87,6 +89,20 @@ function World(map, legend)
     
                 var directionVector = fourPointDirections[direction];
                 var position = oldPosition.plus(directionVector);
+
+                var currentChr = charFromElement(grid.getSimple(oldPosition));
+
+                currentChr
+
+                if(currentChr == ".")
+                {
+                    position = position.plus(new Vector( 0, -1));                  
+                }
+                if(currentChr == "*")
+                {
+                    position = position.plus(new Vector( 0, -2));                  
+                }
+
                 if(grid.isInside(position))
                 {
                    var action = new Action(direction, getDirectionIndex(direction));
@@ -129,6 +145,7 @@ function World(map, legend)
         }
 
     }
+    
 
     var graph = new Graph();
 

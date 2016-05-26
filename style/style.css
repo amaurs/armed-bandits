@@ -1,16 +1,34 @@
-[role=container]{display:flex}
-[role=canvas]{outline:1px dashed red;padding:1em}
-[role=tools]{outline:1px dashed red;padding:1em}
-[role=controls]{outline:1px dashed red;padding:1em}
-[role=state]{outline:1px dashed red;padding:1em}
-[role=graph]{outline:1px dashed red;padding:1em}
+[role=simulator]{display:flex}
+[role=canvas]{outline:1px dashed black;padding:1em}
+[role=tools]{outline:1px dashed black;padding:1em}
+[role=controls]{width:30% outline:1px dashed black;padding:1em}
+[role=state]{outline:1px dashed black;padding:1em}
+[role=graph]{outline:1px dashed black;padding:1em}
+
+.center {
+    margin: auto;
+    width: 80%;
+    border:none;
+    
+}
+
+[role=state]
+{
+    height:7em;
+}
+
+[role=state] td
+{
+    width:5em;
+}
 
 #world{
    font-family: Courier;
    white-space: pre-wrap;
 }
 
-#container{
+#agent{
+   margin:auto;
 }
 
 #grid_bg {

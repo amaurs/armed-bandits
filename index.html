@@ -4,6 +4,8 @@
     <head>
         <meta charset="utf-8">
         <title>Reinforcement Learning</title>
+        <link rel="stylesheet" href="./highlight/styles/default.css">
+        <script src="./highlight/highlight.pack.js"></script>
         <link rel="stylesheet" type="text/css" href="style/style.css">
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script src="javascript/graph.js"></script>
@@ -17,8 +19,12 @@
         <script src="javascript/main.js"></script>
     </head>
     <body>
+<div id="container" class="center">    
 <h1>Reinforcement Learning</h1>
-<div role="container">
+
+<p>En este ejercicio se ejemplifica el método <strong>SARSA</strong> de On-Policy Temporal Difference Control. El código se puede consultar y descargar en el siguiente <a href="https://github.com/amaurs/reinforcement-learning">repositorio</a>. Este simulador ha sido probado en Chrome Version 50.0.2661.94, corriendo en una <strong>MacBook Pro</strong> con <strong>El Capitan</strong>, es posible que algunos elementos gráficos no estén disponibles en otras plataformas.</p>
+
+<div role="simulator">
   
   <div role="canvas">
 
@@ -27,14 +33,16 @@
   <div role="tools">
     <div role="controls">
             <div id="price"></div>
-            <p>alpha</p><input id="alpha" type="range"></input>
-            <p>gamma</p><input id="gamma" type="range"></input>
-            <p>epsilon</p><input id="epsilon" type="range"></input>
+            <div id="time"></div>
+            <p>alpha:</p><input id="alpha" type="range"></input>
+            <p>gamma:</p><input id="gamma" type="range"></input>
+            <p>epsilon:</p><input id="epsilon" type="range"></input>
+            <p>show wind:</p><input id="show-wind" type="checkbox"></input>
     </div>
     <div role="state">
       <table>
         <tr><td></td><td><span id="n"></span></td><td></td></tr>
-        <tr><td><span id="e"></span></td><td></td><td><span id="w"></span></td></tr>
+        <tr><td><span id="e"></span></td><td><span id="agent"></span></td><td><span id="w"></span></td></tr>
         <tr><td></td><td><span id="s"></span></td><td></td></tr>
       </table>
     </div>
@@ -42,11 +50,82 @@
 
 
   </div>
-   
-</div>
- <div role="graph">
+    <div role="graph">
         <div id="chart_div"></div>
     </div>
+</div>  
 
-    </body>
+<h2>Implementación</h2>
+
+<p>La implementación se realizó, en su totalidad, usando el lenguaje de programación <strong>javascript</strong>. Para modelar la cadena de Markov, se usa una implementación de una estructura de datos <strong>grafo</strong>. Para la misma se tienen dos tipos de objetos, un <strong>Node</strong> y un <strong>Edge</strong>. Existen a su vez, usando herencia, dos tipos de <strong>Node</strong>: <strong>State</strong> y <strong>Action</strong>. Estos dos tipos de <strong>Node</strong> están conectados entre si por medio del objeto <strong>Edge</strong>. Finalmente el objeto <strong>Graph</strong> posee una lista con la colección de nodos y aristas que conforman el grafo. Asimismo, <strong>Graph</strong> posee un apuntador al estado actual y brinda una serie de métodos para navegar por el grafo.</p>
+
+<p>Al comienzo del simulador, se lee un mapa que representa el estado del mundo y permite la construción del modelo del grafo para el mismo. Esto permite cambiar rápidamente el mapa del mundo y agregar nuevos obstaculos sin mayor complicación. En el caso particular de este ejercicio, se eligen etiquetas que representan el viento. Cuando se cae en una casilla con una etiqueta de esta naturaleza, el siguiente estado se determina tomando en cuenta la acción del viento, es decir, dependiendo del tipo, el agente será empujado una o dos casillas en dirección norte. Existe además un único símbolo que representa el final del episodio. Una vez que el agente llega a dicho símbolo, vuelve automáticamente al estado inicial.</p>
+
+<pre>
+<code class="javascript">
+var plan = ["############",
+            "#          #",
+            "#   ...... #",
+            "#   ...**. #",
+            "#   ...*%. #",
+            "#   ...**. #",
+            "#   ...**. #",
+            "#   ...**. #",
+            "############"]; 
+</code>
+</pre>
+
+<h2>Aprendizaje</h2>
+
+<p>Una vez iniciado el simulador, el agente elige una acción usando una política <strong>epsilon-greedy</strong>, es decir, con probabilidad <strong>epsilon</strong> se moverá eligiendo una dirección al azar, el resto del tiempo eligirá la acción para la cual el valor de la <strong>(estado,acción)</strong> bajo la función <strong>Q</strong> sea máximo. Dicha función se representa por medio de una lista de valores cuyo tamaño es <strong>#(estados)#(acciones)</strong> (número de estados por número de acciones). En un principio, la lista <strong>Q</strong> se inicializa con el valor cero en cada entrada y se actualiza en cada paso usando el método de aprendizaje <strong>SARSA</strong>.</p>
+
+<pre>
+<code class="javascript">
+if(this.state1 == null || this.action1 == null)
+{
+    //Initialize s
+    this.state1 = this.graph.getCurrent();
+    //Choose action1 from state1 using policy derived from Q (e-greedy) 
+    var nextMove = this.selectNextAction(this.state1.getIndex());
+    this.graph.moveTo(nextMove);
+    this.action1 = this.graph.getCurrent();
+    
+}
+//Take action1, observe reward and state2
+this.graph.step();
+step = step + 1;
+var reward = this.graph.getCurrent().getReward();
+var state2 = this.graph.getCurrent();
+
+myVector = vectorFromString(this.graph.getCurrent().toString());
+
+//Choose action2 from state2 usign policy derived from Q (e-greedy) 
+if(Math.random() < epsilon)
+{
+    this.graph.step();
+}
+else
+{
+    var nextMove = this.selectNextAction(state2.getIndex());
+    this.graph.moveTo(nextMove);
+}
+var action2 = this.graph.getCurrent();
+//Learn with Q(s1,a1) <- Q(s1,a1) + alpha[reward + gammaQ(s2,a2) - Q(s1,a1)]
+this.sarsaLearn(this.state1.getIndex(), this.action1.getIndex(), reward, state2.getIndex(), action2.getIndex());
+</code>
+</pre>
+
+<p>La función de aprendizaje utiliza dos parametros para afinar el algoritmo de aprendizaje: </strong>alpha</strong> y </strong>gamma</strong>. El parámetro </strong>alpha</strong> representa en que proporción la información que se tenía sobre un estado será remplazada por lo aprendido en el momento actual. En los casos degenerados, si consideramos un valor de </strong>alpha</strong> igual a cero, el agente se queda con la información que ha aprendido hasta el momento sin considerar lo que le ofrece el mundo, si consideramos un valor de </strong>alpha</strong> igual a uno, la información aprendida en el pasado será remplazada en su totalidad por lo aprendido en el moento actual. Por otro lado, el parámetro </strong>gamma</strong> representa la importancia que le damos al valor que tuvo elegir un par <strong>(estado,acción)</strong> en el pasado. Si consideramos el caso degenerado de </strong>gamma</strong> igual a cero, nos interesamos únicamente en la recompensa que el mundo ofrece en ese estado.</p>
+
+
+
+<h2>Simulación</h2>
+
+<p>El simulador ofrece una serie de controles y visualizaciones para modificar dinámicamente el comportamiento del agente. Se tiene, por un lado, la representación del estado del mundo y la posición del agente. en otra sección se muestran el número de episodios que han transcurrido desde el inicio de la simulación así como el número de pasos que el agente ha realizado durante el episodio actual. En la misma sección se tienen una serie de sliders para modificar los valores de alpha, gamma y epsilon. Cuando cualquiera de estos valores es modificado, el comportamiento de aprendizaje del agente cambia de forma inmediata. El checkbox sirve para mostrar en el mapa las casillas que representan el viento. En la parte inferior de la misma sección se muestran los valores, para cada dirección, de la función <strong>Q</strong> para el estado actual, esto ayuda a entender las decisiones que toma el agente en cada paso. Finalmente, a la derecha del simulador, encontramos una gráfica que va cambiando conforme el agente va llegando a la meta. La gráfica representa la relación entre el número de episodios durante los cuales el agente ha estado aprendiendo y el número de pasos que le lleva terminar.</p>
+
+<h2>Referencias</h2>
+
+<p>Para la implementación de este algoritmo se usó el libro de <strong>Richard S. Sutton</strong> 
+y <strong>Andrew G. Barto</strong>, <a href="https://webdocs.cs.ualberta.ca/~sutton/book/ebook/the-book.html">Reinforcement Learning: An Introduction</a>, en específico, el capítulo <a href="https://webdocs.cs.ualberta.ca/~sutton/book/ebook/node64.html">6.4 Sarsa: On-Policy TD Control</a>.</p>
+</div>
 </html>

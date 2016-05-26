@@ -1,7 +1,7 @@
 var board;
 var COLUMNS = 10;
-var ROWS = 5;
-var INITIAL = new Vector(1,1);
+var ROWS = 7;
+var INITIAL = new Vector(1,4);
 
 function drawBoard()
 {
@@ -37,14 +37,23 @@ function printBoardToElement(board, element)
 function getIcon(key)
 {
     var emojis = 
-        { "#": "🌵" , 
-          "o": "🐑", 
-          "%": "🌹"  }
+        { "#": "⚫️" , 
+          "o": "🐒", 
+          "%": "🍌",
+          "*": "🌪",
+          ".": "🌬",
+          " ": " "}
     var emojis2 = 
         { "#": "⚫️" , 
           "o": "🐒", 
-          "%": "🍺",
-          "/": "⚡️" }
+          "%": "🍌",
+          "*": " ",
+          ".": " ",
+          " ": " "}
+    if(showWind)
+    {
+        return emojis[key];
+    }
     return emojis2[key];
 }
 

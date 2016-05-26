@@ -67,10 +67,12 @@ TemporalDifferenceAgent.prototype.actSarsa = function(view)
         
     }
 
-    document.getElementById("n").innerHTML = this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("n"))].toFixed(3);
-    document.getElementById("e").innerHTML = this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("e"))].toFixed(3);
-    document.getElementById("s").innerHTML = this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("s"))].toFixed(3);
-    document.getElementById("w").innerHTML = this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("w"))].toFixed(3);
+    document.getElementById("n").innerHTML = "n: " + this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("n"))].toFixed(1);
+    document.getElementById("e").innerHTML = "e: " +this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("e"))].toFixed(1);
+    document.getElementById("s").innerHTML = "s: " +this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("s"))].toFixed(1);
+    document.getElementById("w").innerHTML = "w: " +this.Q[this.getQIndex(this.state1.getIndex(), getDirectionIndex("w"))].toFixed(1);
+    document.getElementById("time").innerHTML = "⏱: " + step;
+       
 
     //Take action1, observe reward and state2
     this.graph.step();
@@ -153,6 +155,16 @@ TemporalDifferenceAgent.prototype.originChar = "o";
 Simplest agent of all, a wall object does nothing, just acts as an obstacle.
 **/
 function Wall() {}
+
+/**
+Simplest agent of all, a wall object does nothing, just acts as an obstacle.
+**/
+function Wind() {}
+
+/**
+Simplest agent of all, a wall object does nothing, just acts as an obstacle.
+**/
+function Hurricane() {}
 
 /**
 Goal.
