@@ -1,0 +1,164 @@
+---
+title: "Reporte 1"
+author: "Amaury Gutiérrez 96401"
+output: pdf_document
+---
+
+## Tipos de datos en el lenguaje R
+
+Existen varios tipos de objetos en R, entre los más usados encontramos:
+
+* Vectors
+* Lists
+* Matrices
+* Arrays
+* Factors
+* Data Frames
+
+Cuando se crea una variable, al objeto de R se le asigna el tipo de dato de la variable. Existen 6 distintos tipos de datos:
+
+
+* Logical
+
+```{r}
+v <- TRUE 
+print(class(v))
+```
+
+* Numeric
+
+```{r}
+v <- 23.5
+print(class(v))
+```
+
+* Integer
+
+```{r}
+v <- 2L
+print(class(v))
+```
+
+* Complex
+
+```{r}
+v <- 2+5i
+print(class(v))
+```
+
+* Character
+
+```{r}
+v <- "TRUE"
+print(class(v))
+```
+
+* Raw
+
+```{r}
+v <- charToRaw("Hello")
+print(class(v))
+```
+
+
+1. Investigar y ejemplificar cómo se representa cada tipo de dato en R:
+
+  a. Binarios/Booleanos:
+    * Un vector lógico (TRUE/FALSE)
+    
+    
+```{r}
+v <- c(FALSE, TRUE) 
+print(class(v))
+```
+
+```{r} 
+v <- c(0,1)
+print(v)
+as.logical(v)
+```
+
+
+  b. Categóricos o Nominales
+    * Un vector de factores no ordenados
+    * Un vector de caracteres
+    
+```{r}
+categorical <- as.factor(c("perro", "gato", "lobo", "zorro"))
+class(categorical)
+```
+  
+```{r}
+characters <- c("perro", "gato", "lobo", "zorro")
+class(characters)
+```
+
+  c. Ordinales
+    * Un vector de enteros
+    * Un vector numérico
+    
+```{r}
+integer <- c(1, 7, 5, 2)
+class(integer)
+```
+
+```{r}
+numeric <- c(1.6, 4.7, 9.0, 5.3)
+class(numeric)
+```
+
+  d. Numéricos con escala de razón
+    * Un vector de factores ordenados
+    * Un vector de enteros
+    * Un vector numérico
+  
+```{r}
+factor_ordered <- as.factor(c("low", "medium", "high"))
+class(factor_ordered)
+```
+
+```{r}
+numeric <- c(1.6, 4.7, 9.0, 5.3)
+class(numeric)
+```
+
+  e. Numéricos sin escala de razón
+    * Un vector de factores no ordenados
+    * Un vector de enteros
+    * Un vector numérico
+
+```{r}
+categorical <- as.factor(c("perro", "gato", "lobo", "zorro"))
+class(categorical)
+```
+
+```{r}
+numeric <- c(1.6, 4.7, 9.0, 5.3)
+class(numeric)
+```
+
+---
+
+2. Investigar cómo se miden distancias entre vectores de un mismo tipo de datos (e.g., distancia entre dos vectores de escala de razón, distancia entre dos vectores categóricas)
+
+  a. Booleanos
+  
+  La proporción de atributos en los que dos observaciones son distintas.
+  
+  b. Variables Categóricos
+  
+  $$d(i,j)=\fracc{mm}{p}$$
+  
+  Donde p es el número de atributos y mm el número de atributos en los que los objetos $i$ y $j$ no son iguales.
+  
+  c. Ordinales
+  
+    Se pueden asignar rangos y luego tratarlo como núméricos de intervalo
+  
+  d. Numéricos de escala
+  
+    Se puede usar distancia euclidiana, puede que sea necesario normalizar ya que el cero en los numéricos de escala suele no tener un significado en si mismo.
+  
+  e. Numéricos de intervalo
+  
+    Se usa en general la distancia euclidiana.
